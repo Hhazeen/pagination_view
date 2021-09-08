@@ -80,6 +80,15 @@ class PaginationViewState<T> extends State<PaginationView<T>> {
   Future<void> refresh() async {
     await _cubit!.refreshPaginatedList();
     _scrollController!.animateTo(
+      0,
+      curve: Curves.easeIn,
+      duration: const Duration(milliseconds: 200),
+    );
+  }
+  
+  void addItemToList(List<T> newItems)async{
+    await _cubit!.addItemsToPaginatedList(newItems);
+    _scrollController!.animateTo(
       _scrollController!.position.maxScrollExtent,
       curve: Curves.easeIn,
       duration: const Duration(milliseconds: 200),
