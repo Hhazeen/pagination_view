@@ -32,6 +32,7 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
     await _fetchAndEmitPaginatedList(
         previousList: (state as PaginationLoaded).items as List<T>,
         extraItems: newItems);
+  }
 
   Future<void> _fetchAndEmitPaginatedList(
       {List<T> previousList = const [], List<T> extraItems = const []}) async {
