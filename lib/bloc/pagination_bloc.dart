@@ -11,6 +11,8 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
       : super(PaginationInitial<T>());
 
   final List<T> preloadedItems;
+  
+  final List<T> notAddedYetItems = [];
 
   final Future<List<T>> Function(int) callback;
 
@@ -29,7 +31,9 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
   }
   
   Future<void> addItemsToPaginatedList(List<T> newItems) async {
-    preloadedItems.addAll(newItems);
+    preloadedItems
+        .addAll(((state as PaginationLoaded).items as List<T>));
+    notAddedYetItems.addAll(newItems);
     emit(PaginationInitial());
   }
 
@@ -41,8 +45,9 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
       );
       emit(PaginationLoaded(
         items: List<T>.from(previousList + newList),
-        hasReachedEnd: newList.isEmpty,
+        hasReachedEnd: newList.isEmpty && notAddedYetItems.isEmpty,
       ));
+      notAddedYetItems.clear();
     } on Exception catch (error) {
       emit(PaginationError(error: error));
     }
