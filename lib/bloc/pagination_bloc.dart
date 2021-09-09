@@ -31,10 +31,8 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
   }
   
   Future<void> addItemsToPaginatedList(List<T> newItems) async {
-    preloadedItems
-        .addAll(((state as PaginationLoaded).items as List<T>));
     notAddedYetItems.addAll(newItems);
-    emit(PaginationLoaded(items: preloadedItems, hasReachedEnd: false));
+    emit(PaginationLoaded(items: ((state as PaginationLoaded).items as List<T>), hasReachedEnd: false));
   }
 
   Future<void> _fetchAndEmitPaginatedList(
