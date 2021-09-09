@@ -34,7 +34,7 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
     preloadedItems
         .addAll(((state as PaginationLoaded).items as List<T>));
     notAddedYetItems.addAll(newItems);
-    emit(PaginationInitial());
+    emit(PaginationLoaded(items: preloadedItems, hasReachedEnd: false));
   }
 
   Future<void> _fetchAndEmitPaginatedList(
