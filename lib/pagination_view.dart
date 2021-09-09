@@ -88,6 +88,7 @@ class PaginationViewState<T> extends State<PaginationView<T>> {
   
   void addItemToList(List<T> newItems)async{
     await _cubit!.addItemsToPaginatedList(newItems);
+    if (_scrollController!.hasClients)
     _scrollController!.animateTo(
       _scrollController!.position.maxScrollExtent + 100,
       curve: Curves.easeIn,
