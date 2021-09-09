@@ -29,18 +29,16 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
   }
   
   Future<void> addItemsToPaginatedList(List<T> newItems) async {
-    await _fetchAndEmitPaginatedList(
-        previousList: (state as PaginationLoaded).items as List<T>,
-        extraItems: newItems);
+    preloadedItems.addAll(newItems);
+    emit(PaginationInitial());
   }
 
   Future<void> _fetchAndEmitPaginatedList(
-      {List<T> previousList = const [], List<T> extraItems = const []}) async {
+      {List<T> previousList = const []}) async {
     try {
-      final newList = (await callback(
+      final newList = await callback(
         _getAbsoluteOffset(previousList.length),
-      ));
-      newList.addAll(extraItems);
+      );
       emit(PaginationLoaded(
         items: List<T>.from(previousList + newList),
         hasReachedEnd: newList.isEmpty,
