@@ -12,7 +12,7 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
 
   final List<T> preloadedItems;
   
-  final List<T> notAddedYetItems = [];
+  final List<T> notAddedYetItems = <T>[];
 
   final Future<List<T>> Function(int) callback;
 
@@ -44,7 +44,7 @@ class PaginationCubit<T> extends Cubit<PaginationState<T>> {
         _getAbsoluteOffset(previousList.length),
       );
       emit(PaginationLoaded(
-        items: List<T>.from(previousList + newList),
+        items: List<T>.from(previousList + newList + notAddedYetItems),
         hasReachedEnd: newList.isEmpty && notAddedYetItems.isEmpty,
       ));
       notAddedYetItems.clear();
